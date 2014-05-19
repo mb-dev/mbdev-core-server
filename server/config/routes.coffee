@@ -8,6 +8,7 @@ module.exports = (app, config) ->
   app.get '/auth/check_login', userSection.checkLogin
   app.use '/data/', userSection.checkLoginFilter
 
+  app.get '/data/get_last_modified', dataSection.getLastModified
   app.get '/data/:appName/:tableName', dataSection.getDataSet
   app.post '/data/:appName/:tableName', dataSection.postDataSet
   app.get '/*', homeSection.index

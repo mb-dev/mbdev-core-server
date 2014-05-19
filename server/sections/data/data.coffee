@@ -35,6 +35,9 @@ validLocation = (appName, userId, fileName) ->
 exports.authenticate = (req, res) ->
   res.json 200, {user: {id: req.user.id, email: req.user.email, lastModifiedDate: req.user.lastModifiedDate, name: req.user.name }}
 
+exports.getLastModified = (req, res) ->
+  res.json 200, {lastModifiedDate: req.user.lastModifiedDate}
+
 exports.getDataSet = (req, res) ->
   modelName = "data_#{req.user.id}_#{req.params.appName}_#{req.params.tableName}"
   Model = mongoose.model(modelName, dataSetModels.DataSetSchema)

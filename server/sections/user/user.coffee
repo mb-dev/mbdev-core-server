@@ -109,6 +109,7 @@ module.exports = (config) ->
               res.json 200, {user: {id: user.id, email: user.email, lastModifiedDate: user.lastModifiedDate, name: user.name }}        
 
   exports.checkLoginFilter = (req, res, next) ->
+    console.log 'in filter'
     fail = -> res.json 401, {reason: 'not_logged_in'}
     token = req.headers.authorization
     if !token
@@ -121,7 +122,7 @@ module.exports = (config) ->
           fail()
         else
           User.findById profile.id, (err, user) ->
-            if err
+            if err || !user
               console.log('failed due to find user error', err)
               fail()
             else
