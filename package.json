@@ -26,7 +26,7 @@
     "googleapis": "~0.4.7",
     "jsonwebtoken": "~0.1.0",
     "express-jwt": "~0.1.2",
-    "cors": "~2.2.0",
+    "cors": "~2.3.1",
     "express": "~4.0.0",
     "morgan": "~1.0.0",
     "body-parser": "~1.0.0",
