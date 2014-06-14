@@ -20,7 +20,7 @@
     "mongoose": "3.8.3",
     "lazy.js": "0.3.0",
     "moment": "2.4.0",
-    "async": "0.2.9",
+    "async": "0.9.0",
     "bcrypt": "0.7.7",
     "request": "2.33.0",
     "googleapis": "~0.4.7",

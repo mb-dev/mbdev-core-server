@@ -4,7 +4,7 @@ path = require('path')
 Lazy = require('lazy.js')
 
 mongoose = require('mongoose')
-dataSetModels = require('../../models/dataset')
+dataSetModels = require('../models/dataset')
 
 filePrefix = path.normalize(__dirname + '../../../../data_files')
 

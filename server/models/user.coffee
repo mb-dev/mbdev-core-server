@@ -13,6 +13,7 @@ UserSchema = new Schema({
   password: { type: String }
   provider: { type: String, default: '' }
   authToken: { type: String, default: '' }
+  refreshToken: { type: String, default: '' }
   googleId: {type: String, default: ''}
   approved: {type: Boolean, default: false}
   lastModifiedDate: {type: Schema.Types.Mixed, default: {}}

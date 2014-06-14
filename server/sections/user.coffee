@@ -21,10 +21,14 @@ module.exports = (config) ->
   exports = {}
   exports.authGoogle = (req, res) ->
     req.session.requestingSite = req.query.site
+    requestCalendar = req.query.gcal
+    scopes = 'https://www.googleapis.com/auth/plus.login profile email'
+    scopes += ' https://www.googleapis.com/auth/calendar.readonly' if requestCalendar
+
     oauth2Client = new OAuth2Client(config.google.clientID, config.google.clientSecret, getCallbackUrl(req))
     authUrl = oauth2Client.generateAuthUrl({
-      access_type: 'offline',
-      scope: 'https://www.googleapis.com/auth/plus.login profile email'
+      access_type: 'offline'
+      scope: scopes
       state: req.get('host')
     })
     res.redirect(authUrl)
@@ -46,7 +50,6 @@ module.exports = (config) ->
     getAccessToken = (callback) ->
       oauth2Client.getToken code, (err, tokens) ->
         oauth2Client.setCredentials(tokens)
-        console.log(tokens)
         callback()
 
     getUserProfile = (callback) ->
@@ -64,7 +67,8 @@ module.exports = (config) ->
             email: profile.emails[0].value,
             provider: 'google',
             googleId: profile.id,
-            authToken: oauth2Client.credentials.access_token
+            authToken: oauth2Client.credentials.access_token,
+            refreshToken: oauth2Client.credentials.refresh_token
           })
           user.save (err) ->
             if (err) 
@@ -76,6 +80,7 @@ module.exports = (config) ->
           user.name = profile.displayName
           user.email = profile.emails[0].value
           user.authToken = oauth2Client.credentials.access_token
+          user.refreshToken = oauth2Client.credentials.refresh_token
           user.save (err) ->
             callback(err, user)
 
@@ -109,7 +114,6 @@ module.exports = (config) ->
               res.json 200, {user: {id: user.id, email: user.email, lastModifiedDate: user.lastModifiedDate, name: user.name }}        
 
   exports.checkLoginFilter = (req, res, next) ->
-    console.log 'in filter'
     fail = -> res.json 401, {reason: 'not_logged_in'}
     token = req.headers.authorization
     if !token
@@ -126,7 +130,6 @@ module.exports = (config) ->
               console.log('failed due to find user error', err)
               fail()
             else
-              console.log('found user, setting: ', user)
               req.user = user
               next()
 
