@@ -1,16 +1,20 @@
 module.exports = (app, config) ->
   homeSection = require('../sections/home/home')
-  userSection = require('../sections/user/user')(config)
-  dataSection = require('../sections/data/data')
+  userSection = require('../sections/user')(config)
+  dataSection = require('../sections/data')
+  gcalSection = require('../sections/gcal')(config)
   
   app.get '/auth/google', userSection.authGoogle
   app.get '/auth/google/callback', userSection.authGoogleCallback
   app.get '/auth/check_login', userSection.checkLogin
+  
   app.use '/data/', userSection.checkLoginFilter
+  app.use '/gcal/', userSection.checkLoginFilter
 
   app.get '/data/get_last_modified', dataSection.getLastModified
   app.get '/data/:appName/:tableName', dataSection.getDataSet
   app.post '/data/:appName/:tableName', dataSection.postDataSet
+  app.get '/gcal/', gcalSection.getEvents
   app.get '/*', homeSection.index
 
   app.use (err, req, res, next) ->
