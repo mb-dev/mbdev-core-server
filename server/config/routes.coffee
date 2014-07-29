@@ -4,18 +4,17 @@ module.exports = (app, config) ->
   dataSection = require('../sections/data')
   gcalSection = require('../sections/gcal')(config)
   
-  app.get '/auth/google', userSection.authGoogle
-  app.get '/auth/google/callback', userSection.authGoogleCallback
-  app.get '/auth/check_login', userSection.checkLogin
+  app.get '/api/core/auth/google', userSection.authGoogle
+  app.get '/api/core/auth/google/callback', userSection.authGoogleCallback
+  app.get '/api/core/auth/check_login', userSection.checkLogin
   
-  app.use '/data/', userSection.checkLoginFilter
-  app.use '/gcal/', userSection.checkLoginFilter
+  app.use '/api/core/data/', userSection.checkLoginFilter
+  app.use '/api/core/gcal/', userSection.checkLoginFilter
 
-  app.get '/data/get_last_modified', dataSection.getLastModified
-  app.get '/data/:appName/:tableName', dataSection.getDataSet
-  app.post '/data/:appName/:tableName', dataSection.postDataSet
-  app.get '/gcal/', gcalSection.getEvents
-  app.get '/*', homeSection.index
+  app.get '/api/core/data/get_last_modified', dataSection.getLastModified
+  app.get '/api/core/data/:appName/:tableName', dataSection.getDataSet
+  app.post '/api/core/data/:appName/:tableName', dataSection.postDataSet
+  app.get '/api/core/gcal/', gcalSection.getEvents
 
   app.use (err, req, res, next) ->
       console.log 'error'
