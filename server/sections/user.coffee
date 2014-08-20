@@ -16,7 +16,7 @@ module.exports = (config) ->
       if item then item.url else item
    
   getCallbackUrl = (req) ->
-    req.protocol + '://' + req.get('host') + '/auth/google/callback'
+    req.protocol + '://' + req.get('host') + '/api/core/auth/google/callback'
 
   exports = {}
   exports.authGoogle = (req, res) ->
